@@ -1,0 +1,719 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clothes for Cancer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --coral-50:  #FAECE7;
+      --coral-100: #F5C4B3;
+      --coral-600: #993C1D;
+      --coral-700: #712B13;
+      --coral-800: #4A1B0C;
+      --green-700: #3B6D11;
+      --bg:        #ffffff;
+      --bg2:       #f7f4f2;
+      --text:      #1a1a1a;
+      --text2:     #5a5a5a;
+      --border:    rgba(0,0,0,0.10);
+      --border2:   rgba(0,0,0,0.18);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:     #1c1a19;
+        --bg2:    #262320;
+        --text:   #f0ece8;
+        --text2:  #9a9088;
+        --border: rgba(255,255,255,0.10);
+        --border2:rgba(255,255,255,0.20);
+      }
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Top ribbon ── */
+    .ribbon-banner {
+      background: var(--coral-700);
+      color: var(--coral-50);
+      text-align: center;
+      font-size: 12px;
+      padding: 7px 1rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 2rem;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--coral-600);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+    .nav-links button {
+      background: none;
+      border: none;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text2);
+      cursor: pointer;
+      padding: 7px 12px;
+      border-radius: var(--radius-md);
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-links button:hover { background: var(--bg2); color: var(--text); }
+    .nav-links button.active { background: var(--bg2); color: var(--text); font-weight: 500; }
+
+    /* Mobile nav */
+    @media (max-width: 540px) {
+      nav { padding: 0.75rem 1rem; }
+      .nav-logo { font-size: 16px; }
+      .nav-links button { font-size: 12px; padding: 6px 8px; }
+    }
+
+    /* ── Pages ── */
+    .page { display: none; max-width: 760px; margin: 0 auto; padding: 2.5rem 2rem 3rem; }
+    .page.active { display: block; }
+
+    @media (max-width: 540px) {
+      .page { padding: 1.75rem 1rem 3rem; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 3.5rem 1rem 2.5rem;
+      border-bottom: 0.5px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    .hero-ribbon {
+      display: inline-block;
+      background: var(--coral-50);
+      color: var(--coral-600);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 16px;
+      border-radius: 999px;
+      margin-bottom: 1.1rem;
+      letter-spacing: 0.05em;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(34px, 7vw, 52px);
+      line-height: 1.1;
+      color: var(--coral-600);
+      margin-bottom: 0.8rem;
+    }
+    .hero p {
+      font-size: 16px;
+      color: var(--text2);
+      max-width: 440px;
+      margin: 0 auto 1.75rem;
+      line-height: 1.65;
+    }
+    .hero-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-block;
+      background: var(--coral-600);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 12px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: opacity 0.18s;
+    }
+    .btn-primary:hover { opacity: 0.86; }
+    .btn-outline {
+      display: inline-block;
+      background: none;
+      color: var(--coral-600);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 11px 24px;
+      border-radius: 999px;
+      border: 1.5px solid var(--coral-600);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+    .btn-outline:hover { background: var(--coral-50); }
+    .btn-block { width: 100%; text-align: center; }
+
+    /* ── Stats ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } }
+    .stat-card {
+      background: var(--bg2);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      color: var(--coral-600);
+      font-weight: 700;
+    }
+    .stat-label { font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.4; }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      margin-bottom: 0.5rem;
+      color: var(--coral-700);
+    }
+    .card p { font-size: 14px; color: var(--text2); line-height: 1.65; }
+
+    /* ── Email signup ── */
+    .email-section {
+      background: var(--coral-50);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 1.5rem;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .email-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 21px;
+      color: var(--coral-700);
+      margin-bottom: 0.35rem;
+    }
+    .email-section p { font-size: 13px; color: var(--coral-600); margin-bottom: 1.1rem; }
+    .email-row { display: flex; gap: 8px; max-width: 400px; margin: 0 auto; }
+    .email-row input {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--coral-100);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      background: #fff;
+      color: #1a1a1a;
+      outline: none;
+    }
+    .email-row input:focus { border-color: var(--coral-600); }
+    .btn-sub {
+      background: var(--coral-600);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
+      transition: opacity 0.18s;
+    }
+    .btn-sub:hover { opacity: 0.86; }
+    .email-success { display: none; font-size: 14px; color: var(--green-700); font-weight: 500; margin-top: 0.8rem; }
+
+    /* ── Section helpers ── */
+    .section-tag {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--coral-600);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: var(--coral-700);
+      margin-bottom: 1rem;
+    }
+    .section-body {
+      font-size: 15px;
+      color: var(--text2);
+      line-height: 1.75;
+      margin-bottom: 1.1rem;
+    }
+
+    /* ── Pillars ── */
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 1.75rem;
+    }
+    @media (max-width: 480px) { .pillar-grid { grid-template-columns: 1fr; } }
+    .pillar {
+      background: var(--bg2);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+    }
+    .pillar-icon { font-size: 20px; margin-bottom: 0.4rem; }
+    .pillar h4 { font-size: 14px; font-weight: 500; color: var(--coral-700); margin-bottom: 0.3rem; }
+    .pillar p { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+    /* ── Donate CTA ── */
+    .donate-block {
+      background: var(--coral-700);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .donate-block h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: #fff; margin-bottom: 0.4rem; }
+    .donate-block p { font-size: 13px; color: var(--coral-50); margin-bottom: 1.1rem; opacity: 0.9; }
+    .btn-donate-white {
+      display: inline-block;
+      background: #fff;
+      color: var(--coral-700);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 12px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: opacity 0.18s;
+    }
+    .btn-donate-white:hover { opacity: 0.88; }
+
+    /* ── Team ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 1.75rem;
+    }
+    @media (max-width: 480px) { .team-grid { grid-template-columns: 1fr 1fr; } }
+    .team-card { text-align: center; }
+    .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--coral-50);
+      color: var(--coral-600);
+      font-weight: 500;
+      font-size: 19px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.55rem;
+      font-family: 'Playfair Display', serif;
+    }
+    .team-name { font-size: 14px; font-weight: 500; }
+    .team-role { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+    /* ── Contact ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 480px) { .contact-grid { grid-template-columns: 1fr; } }
+    .contact-item {
+      background: var(--bg2);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+    }
+    .ci-label { font-size: 11px; color: var(--text2); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .ci-val { font-size: 14px; font-weight: 500; color: var(--coral-700); }
+    .ci-val a { color: var(--coral-600); text-decoration: none; }
+    .ci-val a:hover { text-decoration: underline; }
+
+    /* Contact form */
+    .contact-form {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem;
+    }
+    .contact-form h3 { font-size: 15px; font-weight: 500; color: var(--coral-700); margin-bottom: 1.1rem; }
+    .cf-label { font-size: 13px; color: var(--text2); margin-bottom: 4px; display: block; }
+    .cf-input {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--border2);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      background: var(--bg2);
+      color: var(--text);
+      margin-bottom: 12px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .cf-input:focus { border-color: var(--coral-600); }
+    .cf-textarea { height: 100px; resize: vertical; }
+    .form-success { display: none; text-align: center; padding: 1.25rem; font-size: 14px; color: var(--green-700); font-weight: 500; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      border-top: 0.5px solid var(--border);
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+    footer a { color: var(--coral-600); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Divider ── */
+    .divider { height: 0.5px; background: var(--border); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+  <div class="ribbon-banner">🎗️ Every item donated makes a difference &nbsp;·&nbsp; Student-led initiative supporting the American Cancer Society</div>
+
+  <nav>
+    <a class="nav-logo" href="#" onclick="showPage('home'); return false;">Clothes for Cancer</a>
+    <div class="nav-links">
+      <button class="active" onclick="showPage('home')">Home</button>
+      <button onclick="showPage('mission')">Our Mission</button>
+      <button onclick="showPage('about')">About Us</button>
+      <button onclick="showPage('contact')">Contact</button>
+    </div>
+  </nav>
+
+  <!-- ════════ HOME ════════ -->
+  <div class="page active" id="page-home">
+
+    <div class="hero">
+      <div class="hero-ribbon">🎗️ Student-Led Initiative</div>
+      <h1>Clothes for Cancer</h1>
+      <p>Donating used clothing to support cancer patients and fund life-saving research — one piece of clothing at a time.</p>
+      <div class="hero-btns">
+        <a class="btn-primary" href="https://www.cancer.org/involved/donate/" target="_blank" rel="noopener">
+          Donate to American Cancer Society ↗
+        </a>
+        <button class="btn-outline" onclick="showPage('mission')">Our Mission</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-num">1 in 2</div>
+        <div class="stat-label">People will face cancer in their lifetime</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$7B+</div>
+        <div class="stat-label">Invested in cancer research by the ACS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3.5M</div>
+        <div class="stat-label">ACS volunteers across the country</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>How It Works</h3>
+      <p>
+        We collect used clothing from our school and community, then donate the items to ACS stores to raise funds.
+        All proceeds go directly to the American Cancer Society to support patients, fund research, and provide
+        transportation and housing assistance to those in need.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Why It Matters</h3>
+      <p>
+        Cancer touches almost every family, including mine and many others. Many patients face serious financial burdens during treatment, with things like
+        covering medication, travel to appointments, and day to day living. Your donated clothes can help change that.
+        Small acts of kindness add up to something powerful.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>How to Donate Clothing</h3>
+      <p>
+        Drop off clean, used clothing at our schools collection bins (located at Tam High, MVMVS, Old Mill, Park Elementary, and Tam Valley).
+        We accept all sizes and styles — shirts, pants, jackets, shoes, and accessories. Items are given
+        directly to ACS discovery stores located around the bay area and sold to raise funds for cancer research.
+      </p>
+    </div>
+
+    <div class="email-section">
+      <h3>Stay In The Loop</h3>
+      <p>Get updates on our main yearly donation drive (May 31, 2026), events, and ways to help.</p>
+      <div class="email-row" id="email-form-row">
+        <input type="email" id="email-input" placeholder="your@email.com" aria-label="Email address" />
+        <button class="btn-sub" onclick="handleSubscribe()">Subscribe</button>
+      </div>
+      <div class="email-success" id="email-success">✓ You're on the list! Thank you for your support.</div>
+    </div>
+
+  </div>
+
+  <!-- ════════ OUR MISSION ════════ -->
+  <div class="page" id="page-mission">
+
+    <div class="section-tag">Our Purpose</div>
+    <div class="section-title">Our Mission</div>
+
+    <p class="section-body">
+      Our mission is to raise awareness and funds for cancer research through collecting and donating gently used
+      clothing. We believe that every person, regardless of age, can take meaningful impact in the fight against cancer.
+    </p>
+    <p class="section-body">
+      Through our main clothing drive (5-31-26 save the date!) and community action, we aim to help those with cancer, support patients facing financial burdens,
+      and donate resources directly to organizations like the American Cancer Society. Where they can do the most good!
+    </p>
+    <p class="section-body">
+      We started this initiative because cancer has touched the lives of people we know and love.
+      We couldn't stand by and do nothing. So we decided to started small, with the clothes in our closets, and we hope
+      you'll join us.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="pillar-icon">🎗️</div>
+        <h4>Raise Awareness</h4>
+        <p>Educate our school and community about how everyday actions can support the cancer fight.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">👕</div>
+        <h4>Collect Clothing</h4>
+        <p>Organize a large donation drive (5-31-26), and collect used clothes at our school and in our neighborhood.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">💰</div>
+        <h4>Fund Research</h4>
+        <p>Channel all donations to the American Cancer Society to support life-saving research programs.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🤝</div>
+        <h4>Build Community</h4>
+        <p>Bring students, families, and the Mill Valley community together around a common cause that affects millions of families worldwide.</p>
+      </div>
+    </div>
+
+    <div class="donate-block">
+      <h3>Want to Make a Direct Impact?</h3>
+      <p>100% of donations to the American Cancer Society go toward research, patient services, and prevention programs.</p>
+      <a class="btn-donate-white" href="https://www.cancer.org/involved/donate/" target="_blank" rel="noopener">
+        Donate Now at cancer.org ↗
+      </a>
+    </div>
+
+  </div>
+
+  <!-- ════════ ABOUT US ════════ -->
+  <div class="page" id="page-about">
+
+    <div class="section-tag">Who We Are</div>
+    <div class="section-title">About Us</div>
+
+    <p class="section-body">
+      Clothes for Cancer is a student-led project created with the simple belief: small actions lead to big change.
+      We are a group of students at <strong> Tamalpais High School </strong> who wanted to take real action in the fight against cancer.
+    </p>
+    <p class="section-body">
+      We are organizing a large clothing donation drive on May 31, 2026 at the Depot, set donation bins up our local elementary, middle, and high schools, and donatinf all clothing and profits to cancer research
+      and patient support organizations (like ACS). No donation is too small, every coat, shirt, or pair of pants
+      brings us one step closer to a world without cancer.
+    </p>
+    <p class="section-body">
+      We are proudly partnered with the <a href="https://www.cancer.org" target="_blank" rel="noopener" style="color: var(--coral-600);">American Cancer Society</a>,
+      the largest voluntary health organization in the United States dedicated to eliminating cancer.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="section-tag">Our Team</div>
+    <div class="section-title" style="font-size:22px;">Meet the People Behind the Project</div>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="avatar">NB</div>
+        <div class="team-name">Nash Benford</div>
+        <div class="team-role">Founder &amp; Leader</div>
+      </div>
+      <div class="team-card">
+        <div class="avatar">LB</div>
+        <div class="team-name">Leo Blacher</div>
+        <div class="team-role">Publicity Coordinator</div>
+      </div>
+      <div class="team-card">
+        <div class="avatar">HS</div>
+        <div class="team-name">Harrison Schnieder</div>
+        <div class="team-role">Equipment &amp; Setup Leader</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 1.75rem;">
+      <h3>Our School</h3>
+      <p>
+        We are students at Tam High in Mill Valley. This project reflects our commitment to making
+        our community a kinder and better place, starting with the clothes in our own closets.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Our Impact Goal</h3>
+      <p>
+        This year, our goal is to collect <strong>300lb+ items of clothing</strong> and raise <strong>$1,000+</strong> for
+        the American Cancer Society. With your help, through donations, charity, or just spreading the word,
+        we can exceed that goal and make a real difference.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ════════ CONTACT ════════ -->
+  <div class="page" id="page-contact">
+
+    <div class="section-tag">Get In Touch</div>
+    <div class="section-title">Contact Us</div>
+    <p class="section-body">
+      Have questions, want to help, or anything else?
+      We'd love to hear from you.
+    </p>
+
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="ci-label">Email</div>
+        <div class="ci-val">Nashwb10@gmail.com</div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-label">School</div>
+        <div class="ci-val">Tamalpais High School</div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-label">Location</div>
+        <div class="ci-val">Mill Valley, CA</div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-label">Donate Directly</div>
+        <div class="ci-val"><a href="https://www.cancer.org/involved/donate/" target="_blank" rel="noopener">cancer.org/donate ↗</a></div>
+      </div>
+    </div>
+
+    <div class="contact-form" id="contact-form-wrap">
+      <h3>Send Us a Message</h3>
+      <label class="cf-label" for="cf-name">Your Name</label>
+      <input class="cf-input" id="cf-name" type="text" placeholder="John Doe" autocomplete="name" />
+
+      <label class="cf-label" for="cf-email">Email Address</label>
+      <input class="cf-input" id="cf-email" type="email" placeholder="John@gmail.com" autocomplete="email" />
+
+      <label class="cf-label" for="cf-subject">Subject</label>
+      <input class="cf-input" id="cf-subject" type="text" placeholder="Clothing donation, volunteering, question..." />
+
+      <label class="cf-label" for="cf-msg">Message</label>
+      <textarea class="cf-input cf-textarea" id="cf-msg" placeholder="Write your message here..."></textarea>
+
+      <button class="btn-primary btn-block" onclick="handleContact()">Send Message</button>
+    </div>
+
+    <div class="form-success" id="form-success">
+      ✓ Message received! We'll get back to you soon. Thank you for supporting Clothes for Cancer. 🎗️
+    </div>
+
+    <div class="donate-block" style="margin-top: 2rem;">
+      <h3>Can't Wait? Donate Now.</h3>
+      <p>Every dollar given to the American Cancer Society funds research, supports patients, and saves lives.</p>
+      <a class="btn-donate-white" href="https://www.cancer.org/involved/donate/" target="_blank" rel="noopener">
+        Give to the American Cancer Society ↗
+      </a>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2025 Clothes for Cancer &nbsp;·&nbsp; A Student Initiative at Tam High</p>
+    <p style="margin-top: 4px;">
+      All donations benefit the
+      <a href="https://www.cancer.org/involved/donate/" target="_blank" rel="noopener">American Cancer Society</a>
+      &nbsp;·&nbsp; Questions? Email <a href="mailto:Nashwb10@gmail.com">Nashwb10@gmail.com</a>
+    </p>
+  </footer>
+
+  <script>
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(function(p) {
+        p.classList.remove('active');
+      });
+      document.querySelectorAll('.nav-links button').forEach(function(b) {
+        b.classList.remove('active');
+      });
+      document.getElementById('page-' + id).classList.add('active');
+
+      var btns = document.querySelectorAll('.nav-links button');
+      var pages = ['home', 'mission', 'about', 'contact'];
+      var idx = pages.indexOf(id);
+      if (idx >= 0 && btns[idx]) btns[idx].classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleSubscribe() {
+      var val = document.getElementById('email-input').value.trim();
+      if (!val || !val.includes('@')) {
+        document.getElementById('email-input').focus();
+        document.getElementById('email-input').style.borderColor = '#993C1D';
+        return;
+      }
+      document.getElementById('email-form-row').style.display = 'none';
+      document.getElementById('email-success').style.display = 'block';
+    }
+
+    function handleContact() {
+      var name = document.getElementById('cf-name').value.trim();
+      var email = document.getElementById('cf-email').value.trim();
+      var msg = document.getElementById('cf-msg').value.trim();
+      if (!name || !email || !msg) {
+        if (!name) document.getElementById('cf-name').focus();
+        else if (!email) document.getElementById('cf-email').focus();
+        else document.getElementById('cf-msg').focus();
+        return;
+      }
+      document.getElementById('contact-form-wrap').style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
